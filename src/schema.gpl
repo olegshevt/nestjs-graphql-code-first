@@ -1,0 +1,74 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: ID!
+  name: String!
+  products: [Product!]!
+}
+
+"""Product model"""
+type Product implements Inventory {
+  name: String!
+
+  """A unique identifier"""
+  id: ID!
+
+  """Brand of the product"""
+  brand: String!
+  categories: [Category!]!
+  createdAt: Date
+  type: ProductType
+}
+
+interface Inventory {
+  name: String!
+}
+
+enum ProductType {
+  REGULAR
+  PREMIUM
+}
+
+type Service implements Inventory {
+  name: String!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Query {
+  inventories: [InventoriesResult!]!
+  products: [Product!]!
+  product(id: ID!): Product!
+}
+
+union InventoriesResult = Product | Service
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(id: Float!, updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Float!): Product!
+}
+
+"""Create product input object type."""
+input CreateProductInput {
+  """A new product name"""
+  name: String!
+  brand: String!
+  categories: [String!]!
+  type: ProductType!
+}
+
+input UpdateProductInput {
+  """A new product name"""
+  name: String
+  brand: String
+  categories: [String!]
+  type: ProductType
+}
+
+type Subscription {
+  productAdded: Product!
+}
